@@ -1,0 +1,401 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct client 
+	{
+		char   nome[50];
+		char   Prenom[50];
+		char   CIN[50];
+    	float  montant;
+	} client;	
+
+int main() {
+	client s[50],clientTemp;   //table of struct
+	int operationNumber,operationNumber1,operationNumber2;      //variables of switch statement
+    float  montantRetrait,montantDepot;
+    int i=0,j,nombresDesComptes=0,createCompte;
+    char cinRechercher[50];
+    int index,find;
+    float chiffreIntroduit;
+    
+	
+    
+	while (operationNumber != 6) {
+	printf("\n");
+	printf("******************************\n");
+	printf("\n");
+	printf("voila le menu : \n");
+	printf("\n");
+	printf("  pour Introduire un compte bancaire taper : 1\n");
+	printf("\n");
+	printf("  pour Introduire plusieurs comptes bancaires taper : 2\n");
+	printf("\n");
+	printf("  pour faire des operations taper : 3\n");
+	printf("\n");
+	printf("  pour changer les parametres d'affichage taper : 4\n");
+	printf("\n");
+	printf("  pour fait une Fidelisation taper : 5\n");
+	printf("\n");
+	printf("  pour Quitter l'application taper : 6\n");
+	printf("\n");
+	printf("entrer le numero d'operation : ");
+	scanf("%d",&operationNumber);
+	printf("\n");	
+	
+switch(operationNumber) 
+	{
+		case 1 : 
+		  printf("entrer le nom du client [%d]  : ",nombresDesComptes+1);
+		  scanf("%s",s[nombresDesComptes].nome);
+		  printf("entrer le prenom du client [%d] : ",nombresDesComptes+1);
+		  scanf("%s",s[nombresDesComptes].Prenom);
+		  printf("entrer le CIN du client [%d] : ",nombresDesComptes+1);
+		  scanf("%s",s[nombresDesComptes].CIN);
+		  printf("entrer le montant(en DH) du client[%d] : ",nombresDesComptes+1);
+		  scanf("%f", &s[nombresDesComptes].montant);
+		  nombresDesComptes++;
+		  break;
+		case 2 : 
+		   printf("combien de comptes voulez-vous creer : ");
+		   scanf("%d",&createCompte); 
+		   
+		 for(nombresDesComptes;nombresDesComptes<=createCompte;nombresDesComptes++) 
+		 	{
+			  printf("entrer le nome du clien [%d]: ",nombresDesComptes+1);
+			  scanf("%s",s[nombresDesComptes].nome);
+			  printf("entrer le prenom du clien [%d]: ",nombresDesComptes+1);
+			  scanf("%s",s[nombresDesComptes].Prenom);
+			  printf("entrer CIN du client [%d] : ",nombresDesComptes+1);
+			  scanf("%s", s[nombresDesComptes].CIN);
+			  printf("entrer le montant(en DH) du client [%d] : ",nombresDesComptes+1);
+			  scanf("%f", &s[nombresDesComptes].montant);
+			  printf("\n");
+		 	}
+		  break;
+		case 3 : 
+		
+		printf("pour retrait taper : 1\n");
+		printf("pour depot taper : 2\n");
+		
+		printf("ton choix : ");
+		scanf("%d",&operationNumber1);
+		
+		  switch(operationNumber1) {
+		  	case 1:
+		  		printf("combien voulez-vous retirer : \n");
+		  		scanf("%f",&montantRetrait);
+		       
+		        printf("entrer ton CIN : \n");
+		        scanf("%s",cinRechercher);
+		        
+		        find=0;
+		        for(i=0;i<nombresDesComptes;i++)
+		        	{
+		        		if (strcmp(s[i].CIN,cinRechercher) == 0) 
+							{
+								find=1;
+						
+		        				if(montantRetrait<=s[i].montant) 
+									{
+						  				s[i].montant= s[i].montant - montantRetrait;
+						  				
+						  				printf("votre montant maintenant mr(s) [%s] est %f DH",s[i].nome,s[i].montant);
+						  				
+						 				printf("\n");
+				 		 			}
+								else 
+									{
+					  					printf("votre solde est insuffisant!!! \n");
+				  					}
+							}
+					}
+				if (find != 1) 
+					{
+						printf("invalid CIN");
+					}
+		  		break;
+		  	case 2:
+		  		printf("combien voulez-vous depose : \n");
+		  		scanf("%f",&montantDepot);
+		  		
+		  		printf("entrer ton CIN : \n");
+		        scanf("%s",cinRechercher);
+		        find=0;
+		
+		        for(i=0;i<nombresDesComptes;i++)
+		        {
+		        	if(strcmp(s[i].CIN,cinRechercher) == 0) 
+						{
+							find=2;
+							
+			        		if(montantDepot>=0) 
+								{
+									
+				        			s[i].montant= s[i].montant + montantDepot;
+				        			
+				  					printf("votre montant maintenant mr(s) [%s] est %f DH",s[i].nome,s[i].montant);
+				 					printf("\n");
+								}
+							else
+								{
+									printf("votre solde est null ou bien negative!!!");
+								}	
+						}	
+				}
+				if(find != 2) 
+						{
+							printf("invalid CIN");
+						}
+				break;
+		  	default : 
+			  	printf("veuillez entrer le bon numero!!! \n");	
+			  }
+		  break;
+		  
+		case 4 :
+		 
+			printf("pour affiche les comptes bancaire Par Ordre Ascendant taper : 1\n");
+			printf("pour affiche les comptes bancaire Par Ordre Descendant taper : 2\n");
+			printf("(pour organise les comptes bancaire Ascendant ayant un montant superieur a un chiffre introduit taper : 3\n");
+			printf("(pour organise les comptes bancaire Descendant ayant un montant superieur a un chiffre introduit taper : 4\n");
+			printf("pour Recherche par CIN taper : 5\n");
+			
+			printf("entrer ton choix : ");
+			scanf("%d",&operationNumber2);
+			
+			  switch(operationNumber2) {
+			  	case 1 : 
+			  		for (i=0;i<nombresDesComptes;i++)
+					  	
+			        	{
+				            index = i;
+				            
+				            for (j=i+1;j<nombresDesComptes;j++)
+				            
+			            		{
+			                		if(s[index].montant>s[j].montant)
+			                			{
+			                    			index = j;
+			                			}
+			            		}
+			            		
+			            	if (index!=i)
+			            		{
+					                clientTemp = s[i];
+					                s[i] = s[index];
+					                s[index] = clientTemp;
+			            		}
+			        	}
+			        	
+			        printf("voila les comptes bancaire Par Ordre Ascendant : \n\n");
+			        
+			        for (i=0; i<nombresDesComptes; i++) 
+						{
+			        		printf("%s\n",s[i].nome);
+			    			printf("%s\n",s[i].Prenom);
+			    			printf("%s\n",s[i].CIN);
+			    			printf("%f\n",s[i].montant);
+			    			printf("\n");
+						}
+			  		break;
+		  	case 2 :
+			  		
+			  	for (i=0;i<nombresDesComptes;i++)
+					  	
+			        	{
+				            index = i;
+				            
+				            	for (j=i+1;j<nombresDesComptes;j++)
+				            
+			            			{
+			                			if(s[index].montant<s[j].montant)
+			                				{
+			                    				index = j;
+			                				}
+			            			}
+			            		
+			            		if (index!=i)
+			            			{
+						                clientTemp = s[i];
+						                s[i] = s[index];
+						                s[index] = clientTemp;
+			            			}
+			        	}
+			        	
+			        printf("voila les comptes bancaire Par Ordre Descendant : \n\n");
+			        
+			        for (i=0; i<nombresDesComptes; i++) 
+			        
+						{
+			        		printf("%s\n",s[i].nome);
+			    			printf("%s\n",s[i].Prenom);
+			    			printf("%s\n",s[i].CIN);
+			    			printf("%f\n",s[i].montant);
+			    			printf("\n");
+						}
+				  	
+			  	break;
+			case 3 :
+				
+				for (i=0;i<nombresDesComptes;i++)
+					  	
+			        	{
+				            index = i;
+				            
+				            	for (j=i+1;j<nombresDesComptes;j++)
+				            
+			            			{
+			                			if(s[index].montant>s[j].montant)
+			                				{
+			                    				index = j;
+			                				}
+			            			}
+			            		
+			            		if (index!=i)
+			            			{
+						                clientTemp = s[i];
+						                s[i] = s[index];
+						                s[index] = clientTemp;
+			            			}
+			        	}
+			    
+				printf("entre le chiffre : ");   
+				scanf("%f",&chiffreIntroduit); 
+				
+				printf("(voila les comptes bancaire Par Ordre Ascendant ayant un montant superieur au chiffre introduit : \n\n");
+			        
+			        for (i=0; i<nombresDesComptes; i++) 
+						{
+							if(s[i].montant>=chiffreIntroduit) {
+								
+								printf("%s\n",s[i].nome);
+			    				printf("%s\n",s[i].Prenom);
+			    				printf("%s\n",s[i].CIN);
+			    				printf("%f\n",s[i].montant);
+			    				printf("\n");
+								
+							}
+						}		
+			    break; 
+			case 4 :
+				
+			for (i=0;i<nombresDesComptes;i++)
+					  	
+			        	{
+				            index = i;
+				            
+				            for (j=i+1;j<nombresDesComptes;j++)
+				            
+			            		{
+			                		if(s[index].montant<s[j].montant)
+			                			{
+			                    			index = j;
+			                			}
+			            		}
+			            		
+			            	if (index!=i)
+			            		{
+					                clientTemp = s[i];
+					                s[i] = s[index];
+					                s[index] = clientTemp;
+			            		}
+			        	}
+			        	
+			    printf("entre le chiffre : ");   
+				scanf("%f",&chiffreIntroduit); 
+				
+				printf("(voila les comptes bancaire Par Ordre Descendant ayant un montant superieur au chiffre introduit : \n\n");
+			        
+			        for (i=0; i<nombresDesComptes; i++) 
+						{
+							if(s[i].montant>=chiffreIntroduit) {
+								
+								printf("%s\n",s[i].nome);
+			    				printf("%s\n",s[i].Prenom);
+			    				printf("%s\n",s[i].CIN);
+			    				printf("%f\n",s[i].montant);
+			    				printf("\n");
+							}
+						}
+					
+			    break; 	
+			case 5 :
+			    printf("entrer ton CIN : \n");
+			    scanf("%s",cinRechercher);
+			    find=0;
+			    
+			    for(i=0;i<nombresDesComptes;i++) 
+			    	{
+			    		if(strcmp(s[i].CIN,cinRechercher) == 0) 
+			    			{
+			    				find = 3;
+			    				
+			    				printf("\n");
+			    				printf("voila ton compte : \n");
+			    				
+			    				printf("%s\n",s[i].nome);
+			    				printf("%s\n",s[i].Prenom);
+			    				printf("%s\n",s[i].CIN);
+			    				printf("%f\n",s[i].montant);
+							}	
+					}
+					
+				if(find != 3)
+					{
+						printf("invalid CIN \n");	
+					}
+					break;			  	
+			default : 
+		  		printf("veuillez entrer le bon numero!!! \n");
+		  }
+		  break;
+		case 5 : 
+		  	
+		  	for (i=0;i<nombresDesComptes;i++)
+					  	
+			        	{
+				            index = i;
+				            
+				            for (j=i+1;j<nombresDesComptes;j++)
+				            
+			            		{
+			                		if(s[index].montant<s[j].montant)
+			                			{
+			                    			index = j;
+			                			}
+			            		}
+			            		
+			            	if (index!=i)
+			            		{
+					                clientTemp = s[i];
+					                s[i] = s[index];
+					                s[index] = clientTemp;
+			            		}
+			        	}
+			        	
+			    printf("voila les tois premier comptes au niveau de montant avec la fedilisation : ");
+				    	
+		  	for(i=0;i<3;i++) {
+		  		s[i].montant = s[i].montant + (s[i].montant * 1.3 / 100);
+		  		printf("\n");
+		  		printf("compte numero [%d]\n",i+1);
+		  		printf("%s\n",s[i].nome);
+		  		printf("%s\n",s[i].Prenom);
+		  		printf("%s\n",s[i].CIN);
+		  		printf("%f\n",s[i].montant);
+		  		printf("\n");
+		  		
+			  }	  
+		  
+		  break;
+		case 6 : 
+		  printf("\n");
+		  printf("vous avez Quitte lapplication, merci");
+		  break;
+		default : 
+		  printf("invalide operation!!! \n");
+}  //switch bracket
+} //while bracket
+	return 0;
+}
